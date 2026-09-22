@@ -1,0 +1,10 @@
+.topbar nav{display:flex;align-items:center;gap:20px}
+.language-toggle{display:inline-flex;flex-shrink:0;gap:3px;padding:4px;border:1px solid #455575;border-radius:999px;background:#101a31}
+.language-toggle button{min-height:36px;padding:6px 13px;border:0;border-radius:999px;color:#c8d5eb;background:transparent;font-size:13px;line-height:1.3;cursor:pointer}
+.language-toggle button[data-state=on]{background:#8ae7f3;color:#0b172a;font-weight:700}
+.language-toggle button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.notification-fixed{top:90px}
+html[lang=en] .hero h1{line-height:1.2;letter-spacing:-1px}
+html[lang=en] .hero .intro{line-height:1.7}
+html[lang=en] .style-choice small{line-height:1.5}
+@media(max-width:600px){.topbar nav{gap:8px}.topbar nav .network{display:none}.language-toggle button{padding:6px 10px;min-height:40px}.topbar .brand{font-size:20px;gap:7px}.topbar .brand-mark{width:34px;height:34px}.admin-page .topbar{flex-wrap:wrap;gap:12px}.admin-page .topbar .language-toggle{margin-left:auto}html[lang=en] .hero h1{font-size:32px}html[lang=en] .hero-copy{padding-left:20px;padding-right:20px}}

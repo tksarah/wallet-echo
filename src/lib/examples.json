@@ -1,0 +1,82 @@
+[
+  {
+    "style": "wallet-beast",
+    "name": "積み重ねる者 — WALLET BEASTのEcho",
+    "summary": "取得範囲内の181件の活動と、直近30日間の6日の活動を参考にした創作上の個性です。本人の性格や資産価値を評価するものではありません。",
+    "temperamentLabel": "着実",
+    "motifLabel": "積み重ねる者",
+    "pose": "重心の安定した整った姿勢",
+    "motif": "整った縞模様と層を重ねた尾",
+    "evidence": [
+      "取得範囲内の確定済みの活動は181件、成功した操作は179件です。",
+      "最も多い成功操作「contract_call」は179件（成功操作の100%）でした。",
+      "観測した6日間に活動日は6日あり、1日の最大件数は40件でした（UTC基準）。"
+    ],
+    "image": "/examples/wallet-beast.webp",
+    "thumbnail": "/examples/wallet-beast-thumb.webp"
+  },
+  {
+    "style": "rpg-hero",
+    "name": "積み重ねる者 — RPG HEROのEcho",
+    "summary": "取得範囲内の181件の活動と、直近30日間の6日の活動を参考にした創作上の個性です。本人の性格や資産価値を評価するものではありません。",
+    "temperamentLabel": "着実",
+    "motifLabel": "積み重ねる者",
+    "pose": "重心の安定した整った姿勢",
+    "motif": "整えられた道具袋と繰り返す幾何学模様",
+    "evidence": [
+      "取得範囲内の確定済みの活動は181件、成功した操作は179件です。",
+      "最も多い成功操作「contract_call」は179件（成功操作の100%）でした。",
+      "観測した6日間に活動日は6日あり、1日の最大件数は40件でした（UTC基準）。"
+    ],
+    "image": "/examples/rpg-hero.webp",
+    "thumbnail": "/examples/rpg-hero-thumb.webp"
+  },
+  {
+    "style": "collectible",
+    "name": "積み重ねる者 — COLLECTIBLEのEcho",
+    "summary": "取得範囲内の181件の活動と、直近30日間の6日の活動を参考にした創作上の個性です。本人の性格や資産価値を評価するものではありません。",
+    "temperamentLabel": "着実",
+    "motifLabel": "積み重ねる者",
+    "pose": "重心の安定した整った姿勢",
+    "motif": "整えたミニ工具と繰り返す台座模様",
+    "evidence": [
+      "取得範囲内の確定済みの活動は181件、成功した操作は179件です。",
+      "最も多い成功操作「contract_call」は179件（成功操作の100%）でした。",
+      "観測した6日間に活動日は6日あり、1日の最大件数は40件でした（UTC基準）。"
+    ],
+    "image": "/examples/collectible.webp",
+    "thumbnail": "/examples/collectible-thumb.webp"
+  },
+  {
+    "style": "cyber-agent",
+    "name": "積み重ねる者 — CYBER AGENTのEcho",
+    "summary": "取得範囲内の181件の活動と、直近30日間の6日の活動を参考にした創作上の個性です。本人の性格や資産価値を評価するものではありません。",
+    "temperamentLabel": "着実",
+    "motifLabel": "積み重ねる者",
+    "pose": "重心の安定した整った姿勢",
+    "motif": "整列した工具と規則的な発光模様",
+    "evidence": [
+      "取得範囲内の確定済みの活動は181件、成功した操作は179件です。",
+      "最も多い成功操作「contract_call」は179件（成功操作の100%）でした。",
+      "観測した6日間に活動日は6日あり、1日の最大件数は40件でした（UTC基準）。"
+    ],
+    "image": "/examples/cyber-agent.webp",
+    "thumbnail": "/examples/cyber-agent-thumb.webp"
+  },
+  {
+    "style": "legendary-card",
+    "name": "積み重ねる者 — LEGENDARY CARDのEcho",
+    "summary": "取得範囲内の181件の活動と、直近30日間の6日の活動を参考にした創作上の個性です。本人の性格や資産価値を評価するものではありません。",
+    "temperamentLabel": "着実",
+    "motifLabel": "積み重ねる者",
+    "pose": "重心の安定した整った姿勢",
+    "motif": "枠内の整えた装備と規則的な縁飾り",
+    "evidence": [
+      "取得範囲内の確定済みの活動は181件、成功した操作は179件です。",
+      "最も多い成功操作「contract_call」は179件（成功操作の100%）でした。",
+      "観測した6日間に活動日は6日あり、1日の最大件数は40件でした（UTC基準）。"
+    ],
+    "image": "/examples/legendary-card.webp",
+    "thumbnail": "/examples/legendary-card-thumb.webp"
+  }
+]

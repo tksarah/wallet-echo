@@ -1,0 +1,35 @@
+{
+  "name": "wallet-echo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 0.0.0.0",
+    "build": "next build",
+    "start": "next start --hostname 0.0.0.0",
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts"
+  },
+  "dependencies": {
+    "@polkadot/util-crypto": "^13.5.7",
+    "next": "^16.3.5",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "undici": "^7.29.1",
+    "zod": "^3.25.76",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "tailwind-merge": "3.6.0",
+    "radix-ui": "^1.6.7",
+    "lucide-react": "^1.31.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  },
+  "engines": {
+    "node": ">=22.16.0"
+  }
+}

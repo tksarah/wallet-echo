@@ -1,0 +1,1 @@
+{"version":1,"containerPort":3000,"healthPath":"/healthz","files":["package.json","package-lock.json","next.config.ts","tsconfig.json","next-env.d.ts","src","public","deploy-public-key.pub"]}

@@ -1,0 +1,10 @@
+export const styles = [
+  {id:'rpg-hero',name:'RPG HERO',description:'活動の特徴を装備やモチーフに映した、ファンタジーの主人公。',prompt:'An original adult humanoid fantasy adventurer. Rich traveling cloak, intricate armor and magical equipment reflecting the supplied traits. Epic painted fantasy character illustration. No card border.'},
+  {id:'wallet-beast',name:'WALLET BEAST',description:'ウォレットの個性を表現する、人間ではない幻獣。',prompt:'An original wholly non-human mythical beast, expressive animal face, distinctive horns, fur, scales or tails inspired by the supplied traits. Magical creature concept art. No human face, no humanoid body, no card border.'},
+  {id:'cyber-agent',name:'CYBER AGENT',description:'未来的な装備をまとった、人型のデジタルエージェント。',prompt:'An original adult humanoid cybernetic operative or android, technical coat, luminous visor, holographic instruments, sleek hard-surface metallic details. Cinematic futuristic science-fiction portrait. No card border.'},
+  {id:'collectible',name:'COLLECTIBLE',description:'台座・立体感・玩具らしい質感を持つ、デフォルメフィギュア。',prompt:'One original charming chibi vinyl art toy, oversized rounded head and tiny body, tactile molded materials, on a small round display pedestal. Full toy and pedestal visible. Studio product photograph of a miniature collectible figurine, not a lifelike person. No packaging, no card border.'},
+  {id:'legendary-card',name:'LEGENDARY CARD',description:'装飾枠とキャラクターを組み合わせた、カード風アート。',prompt:'One complete premium portrait trading card centered inside a square image, with all four corners visible. Original celestial fantasy character in the illustration window, intricate ornamental silver border and cyan-violet holographic foil. Physical card photographed front-on. Decorative symbols only, no rarity marks or numbers. The decorative card border is required.'},
+] as const;
+export type GenerationStyle=typeof styles[number]['id'];
+export const styleName=(id:string)=>styles.find(s=>s.id===id)?.name||({fantasy:'魔法の王国',japan:'和風・妖怪',space:'宇宙探検',storybook:'絵本の森','sci-fi':'宇宙探検',cyberpunk:'ネオンの未来'} as Record<string,string>)[id]||id;
+export const styleSample=(id:GenerationStyle)=>`/samples/sample-${id}.png`;

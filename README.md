@@ -1,0 +1,50 @@
+# Wallet Echo
+
+Astar EVM / Substrateの公開オンチェーン活動から、Jevで個性を判定し、キャラクター画像を生成する日英対応Webアプリです。ウォレット接続・署名は不要です。
+
+## 実行環境
+
+Node.js 22.16以上、Next.js 16、単一Nodeプロセス。Local Sitesでは非rootコンテナ、ポート3000、永続領域 `/data` を使用します。Sites公開版バージョン8をNode向けに移植しています。
+
+```sh
+npm ci
+cp .env.example .env.local
+npm test
+npm run typecheck
+npm run build
+npm start
+```
+
+API設定: `OPENAI_API_KEY`、`TYPESAFE_API_KEY`、Substrate用の `PUBFI_API_KEY`。キー未設定時は有料処理を開始しません。管理者設定は `ADMIN_PASSWORD_HASH`（scryptのsalt:hash形式）です。値をソースや公開リポジトリに含めないでください。
+
+ブラウザー認証CookieにはHTTPSが必要です。開発時も信頼済みHTTPSプロキシを使用し、実行ポートへの外部からの直接アクセスを遮断してください。`ABUSE_IP_HEADER=x-forwarded-for` は、プロキシが末尾に真正な接続元を設定することを管理者用 `/api/admin/ingress` で検証してから有効化します。未設定時は生成受付を閉じます。
+
+## 機能
+
+- 5つの世界観、日英切替、実際の処理段階による進捗表示、ダウンロード、X向け投稿文。
+- 管理画面で受付停止・再開、検索とページ送り、利用回数・暫定費用・履歴・拒否理由の確認、ウォレット回数リセット、同時生成数3・4・5件の切替。
+- ウォレット3回、ブラウザー3回/日、IP10回/直近1時間・20回/日、アプリ全体100回/日。日付はJST。受付後の失敗と手動再試行も消費し、重複送信は二重計上しません。
+- 署名付きCookieでジョブ所有権を確認。IPはHMAC化して保存し、生IPを保存しません。接続切断時は処理を中断し、自動再生成しません。
+
+## 保存と更新
+
+状態は `DATA_DIR/wallet-echo.sqlite` に保存します。画像はメモリに最大10分だけ保持し、受領時に削除します。再起動後に画像を復元・自動再生成しません。ジョブ24時間、実行履歴5000件、ログ500件、判定キャッシュと累計利用は別途保持します。
+
+旧 `state.json` がある場合は初回起動時に `state.pre-sqlite.json` を作り、履歴・回数・費用・判定キャッシュ・受付停止状態を取り込みます。旧ファイルは変更しません。旧ジョブの所有権を新しいブラウザーへ割り当てません。
+
+更新前に受付を停止し、実行中0件と未受領画像の期限終了を確認してください。移行直後に問題があれば受付停止を維持して旧イメージへ戻せます。更新後に新規受付を再開した後はSQLite側に新しい実績があるため、旧データへ戻すとそれらが失われます。自動でデータを巻き戻さないでください。
+
+## Local Sites 配置
+
+1. `node scripts/create-deployment-key.mjs` でEd25519鍵ペアを作成します。公開鍵は `deploy-public-key.pub`、秘密鍵は `.secrets/deploy-private-key.pem`。既存鍵は上書きしません。
+2. `local-sites.json` の許可リストをLocal Sitesのpackageツールで梱包し、upload、既存アプリへのdeployを実行します。配置成功と `/healthz` の200応答を確認します。
+3. 初回の秘密設定は `node scripts/configure-deployment.mjs https://your-app.example` で署名付きHTTPS経由で送ります。設定元は `.env.local` とローカルの `admin_pw.txt` です。
+4. 管理者用接続診断で偽装した転送ヘッダーが接続元判定に影響しないことを検証し、`ABUSE_IP_HEADER` を設定してから受付を開きます。プロキシ変更時は再検証してください。
+
+既存の `/data/secrets.json` を継承します。ブラウザー認証用秘密値は `/data/browser-secret` に初回生成し、更新時も維持します。署名付き `/api/setup` は指定された項目だけを更新します。
+
+共有URLは `NEXT_PUBLIC_SITE_URL` をビルド時に指定します。Dockerでは同名のビルド引数を使用します。未設定ならブラウザーで表示中のURLを共有文に使用し、静的メタ情報には公開URLを設定しません。
+
+## 公開するファイル
+
+ソース、テスト、配布設定、依存関係ロック、公開用画像だけを管理します。環境設定、APIキー、管理者パスワード、配備用鍵、利用者データ、SQLite、ログ、バックアップ、検証成果物、Sites専用チェックアウトは含めません。テストは外部APIを模擬し、課金や本番データ変更を伴いません。
