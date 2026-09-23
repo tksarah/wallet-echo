@@ -35,4 +35,5 @@ wallet_rpg_mvp_roadmap.md
 /scripts/*
 !/scripts/configure-deployment.mjs
 !/scripts/create-deployment-key.mjs
+!/scripts/sync-sites-ui.mjs
 next-env.d.ts
