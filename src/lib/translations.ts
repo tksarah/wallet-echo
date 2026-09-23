@@ -1,6 +1,10 @@
 export type Language = 'ja' | 'en';
 
 const english: Record<string,string> = {
+  'Astarでの活動から、あなただけのキャラクターを。':'A character inspired by your activity on Astar.',
+  'アドレスを入力して、世界観を選ぶだけ。':'Enter your address. Choose your world.',
+  '接続・署名不要':'No connection or signature needed',
+  '1アドレスにつき3回まで':'Up to 3 generations per address',
   'アクセス頻度の上限':'Request rate limit','サイト全体の日次上限':'Site daily limit','ブラウザーの日次上限':'Browser daily limit','接続元の日次上限':'IP daily limit','接続元の時間上限':'IP hourly limit',
   'ブラウザーの確認が必要':'Browser verification needed','同時生成数の上限':'Concurrency limit','ウォレットの生成枠不足':'Wallet allowance exhausted',
   '送信IDの不一致':'Conflicting request ID','入力内容の不備':'Invalid input','アドレスの不備':'Invalid address','許可されていない送信元':'Disallowed origin','入力サイズの上限':'Input size limit','入力形式の不備':'Invalid format','その他':'Other',

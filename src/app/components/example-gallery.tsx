@@ -10,7 +10,7 @@ export default function ExampleGallery({onChoose, busy}: {onChoose: (style: Gene
   const dialog = useRef<HTMLDialogElement>(null);
   const [selected, setSelected] = useState(examples[0]);
   return <Localized><section className="example-gallery" id="examples" aria-labelledby="examples-title">
-    <div className="section-heading"><div><h2 id="examples-title">ひとつの個性、5つの姿。</h2></div></div>
+    <div className="section-heading"><div><span className="eyebrow">FIVE WORLDS. YOUR STORY.</span><h2 id="examples-title">ひとつの個性、5つの姿。</h2></div></div>
     <p className="example-note">同じ活動を5つの世界観で表現した生成例です。実際の結果は活動内容により異なります。</p>
     <div className="example-grid">{styles.map(style=>{
       const sample = examples.find(e=>e.style===style.id)!;

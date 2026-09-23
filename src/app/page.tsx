@@ -1,6 +1,8 @@
 'use client';
 import {Localized,LanguageToggle,useLanguage} from './components/language';
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import design from './home.module.css';
 import type { GenerationInput, Job } from '@/lib/types';
 import { styleName } from '@/lib/styles';
 import StylePicker from './components/style-picker';
@@ -53,16 +55,23 @@ export default function Home(){
   }
   async function retry(){if(!job||busy||sending.current||!service?.ready||service.receptionPaused||service.dailyLimitReached)return;sending.current=true;setSubmitting(true);clear('generation-error');setError('');setErrorCode('');setErrorScope('result');setPollPaused(false);setConnectionLost(false);setStartedAt(new Date().toISOString());if(retryKey.current?.id!==job.id)retryKey.current={id:job.id,key:crypto.randomUUID()};try{const next=await api<Job>(`/api/jobs/${job.id}/retry`,{method:'POST',headers:{'Idempotency-Key':retryKey.current.key}});retryKey.current=null;setJob(next);scrollToResult();void execute(next.id);}catch(e){setError((e as Error).message);void refresh();}finally{sending.current=false;setSubmitting(false);}}
   const character=job?.character;
-  return <Localized><main><NotificationBar fixed/>
+  return <Localized><div className={design.canvas}><main className={design.page}><NotificationBar fixed/>
     <header className="topbar"><a className="brand" href="/" aria-label="Wallet Echo ホーム"><Mark/><span>Wallet <b>Echo</b></span></a><nav><LanguageToggle/><span className="network"><span/>Astar Network</span></nav></header>
-    <section className="hero">
-      <img className="hero-backdrop" src="/hero-astar-v2.png" alt="黒髪と眼鏡の案内人が、Astarをイメージした星のネットワークを描くイラスト" width="1536" height="1024" fetchPriority="high"/>
-      <div className="hero-copy"><div className="eyebrow">YOUR WALLET. YOUR OTHER SELF.</div><h1>ウォレットの足跡が、<br/><span>あなたの姿になる。</span></h1><p className="intro">Astarでのオンチェーン活動から、<br/>あなただけのキャラクターを。<br/>5つの世界観で、もう一人の自分に出会おう。</p><a className="hero-cta" href="#create">キャラクターをつくる <span>↗</span></a><a className="hero-examples-link" href="#examples">完成見本を見る ↓</a><p className="hero-help">接続・署名不要 / 1アドレスにつき3回まで</p></div>
-      <span className="hero-caption">WALLET ECHO × ASTAR NETWORK<br/>コンセプトアート</span>
+    <section className="hero" aria-labelledby="hero-title">
+      <div className="hero-copy">
+        <div className="eyebrow"><span aria-hidden="true">✧</span> YOUR WALLET. YOUR OTHER SELF.</div>
+        <h1 id="hero-title">ウォレットの足跡が、<br/><span>あなたの姿になる。</span></h1>
+        <p className="intro">Astarでの活動から、あなただけのキャラクターを。<br/>5つの世界観で、もう一人の自分に出会おう。</p>
+        <div className="hero-actions"><a className="hero-cta" href="#create">キャラクターをつくる <span aria-hidden="true">↗</span></a><a className="hero-examples-link" href="#examples">完成見本を見る ↓</a></div>
+        <p className="hero-help"><span><span aria-hidden="true">✓</span> 接続・署名不要</span><span>1アドレスにつき3回まで</span></p>
+      </div>
+      <div className="hero-art">
+        <Image className="hero-backdrop" src="/hero-astar-v2.png" alt={language==='en'?'An illustrated guide connecting stars inspired by Astar':'黒髪と眼鏡の案内人が、Astarをイメージした星のネットワークを描くイラスト'} width={1536} height={1024} sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1050px) calc(100vw - 56px), (max-width: 1199px) calc(100vw - 96px), (max-width: 1344px) calc(100vw - 48px), 1296px" loading="eager" fetchPriority="high"/>
+        <div className="hero-art-label"><span aria-hidden="true">✧</span><span>WALLET ECHO <small>コンセプトアート</small></span></div>
+      </div>
     </section>
-    <ExampleGallery busy={busy} onChoose={style=>{setInput(current=>({...current,style}));document.getElementById('create')?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});document.getElementById('address')?.focus({preventScroll:true});}}/>
     <section className="studio" id="create">
-      <div className="section-heading"><div><h2>あなたの物語を、かたちに。</h2></div></div>
+      <div className="section-heading"><div><span className="eyebrow">CREATE YOUR ECHO</span><h2>あなたの物語を、かたちに。</h2></div><p>アドレスを入力して、世界観を選ぶだけ。</p></div>
       <div className="studio-grid">
         <form className="generator-panel" onSubmit={submit} noValidate>
           {serviceMessage&&<p className="notice service-notice">△ {serviceMessage}</p>}
@@ -93,8 +102,9 @@ export default function Home(){
         </div>
       </div>
     </section>
-    <section className="how" id="how-it-works"><div className="section-heading"><div><h2>足跡が、個性に変わるまで。</h2></div><p>資産の大きさではなく、あなたの行動から。</p></div><div className="how-grid">{[{n:'01',icon:'⌁',title:'足跡を読み取る',text:'Astar上での活動頻度や操作の種類を取得。ウォレットを接続せずに始められます。'},{n:'02',icon:'✧',title:'個性を見つける',text:'Jevが活動の特徴を読み解き、キャラクターの気質やモチーフを決めます。'},{n:'03',icon:'◈',title:'もう一人の自分に出会う',text:'選んだ世界観で、あなたの個性を一枚のキャラクターイメージに描き出します。'}].map(item=><article key={item.n}><div><span className="how-icon">{item.icon}</span><span className="how-number">{item.n}</span></div><h3>{item.title}</h3><p>{item.text}</p></article>)}</div></section>
+    <ExampleGallery busy={busy} onChoose={style=>{setInput(current=>({...current,style}));document.getElementById('create')?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});document.getElementById('address')?.focus({preventScroll:true});}}/>
+    <section className="how" id="how-it-works"><div className="section-heading"><div><span className="eyebrow">BEHIND YOUR ECHO</span><h2>足跡が、個性に変わるまで。</h2></div><p>資産の大きさではなく、あなたの行動から。</p></div><div className="how-grid">{[{n:'01',icon:'⌁',title:'足跡を読み取る',text:'Astar上での活動頻度や操作の種類を取得。ウォレットを接続せずに始められます。'},{n:'02',icon:'✧',title:'個性を見つける',text:'Jevが活動の特徴を読み解き、キャラクターの気質やモチーフを決めます。'},{n:'03',icon:'◈',title:'もう一人の自分に出会う',text:'選んだ世界観で、あなたの個性を一枚のキャラクターイメージに描き出します。'}].map(item=><article key={item.n}><div><span className="how-icon">{item.icon}</span><span className="how-number">{item.n}</span></div><h3>{item.title}</h3><p>{item.text}</p></article>)}</div></section>
     <footer><a className="brand" href="/"><Mark/><span>Wallet <b>Echo</b></span></a><p>あなたの足跡には、まだ知らない物語がある。</p><div className="footer-credit"><span>ASTAR · JEV · GENERATIVE ART</span><span>Created by tksarah</span></div></footer>
     <div className="privacy-note"><p>アドレスや取引IDを除いた活動の集計をJevに送信し、世界観に合わせたキャラクター設定を画像生成サービスに送信します。生成画像は受領まで一時保存し、受領時に削除します。10分後は取得できなくなり、期限切れファイルは次回のアクセス時に削除します。回数制限・運営管理のため、アドレスと累計回数を保持し、直近の実行履歴も記録します。</p><p>不正利用防止のため署名付きCookieを使用します。ブラウザーと接続元の制限記録は48時間、拒否理由の集計は30日保持します。接続元IPは秘密鍵付きハッシュに変換して記録します。</p></div>
-  </main></Localized>;
+  </main></div></Localized>;
 }
