@@ -26,21 +26,22 @@ test('Sites: atomic quotas, deduplication, interrupted streams, durable images, 
 
  useTestBindings({DB,BUCKET} as unknown as Bindings);
  process.env.OPENAI_API_KEY='test';process.env.TYPESAFE_API_KEY='test';
- let calls=0,judgments=0,failImage=false;
+ let calls=0,judgments=0,failImage=false;const imageRequests:Record<string,unknown>[]=[];
  transport.fetch=async(url,init)=>{
    init?.signal?.throwIfAborted();
    if(String(url).includes('blockscout'))return Response.json({items:[],next_page_params:null});
    if(String(url).includes('typesafe')){judgments++;const req=JSON.parse(init!.body as string);return Response.json({model:'jev-test',answers:Object.fromEntries(Object.entries(req.questions).map(([k,q])=>{const keys=Object.keys((q as {criteria:object}).criteria);return [k,{type:'choice',choice:keys[0],confidence:1,probabilities:Object.fromEntries(keys.map((key,i)=>[key,i===0?1:0]))}];}))});}
-   calls++;await new Promise(r=>setTimeout(r,20));init?.signal?.throwIfAborted();if(failImage)return Response.json({error:'test'},{status:500});
+   calls++;imageRequests.push(JSON.parse(String(init?.body)));await new Promise(r=>setTimeout(r,20));init?.signal?.throwIfAborted();if(failImage)return Response.json({error:'test'},{status:500});
    return Response.json({data:[{b64_json:Buffer.concat([Buffer.from('89504e470d0a1a0a','hex'),Buffer.alloc(100)]).toString('base64')}]});
  };
  const key=randomUUID();const pair=await Promise.all([startJob(input,key),startJob(input,key)]);assert.equal(pair[0].id,pair[1].id);assert.equal((await adminData()).totals.attempts,1);
  await assert.rejects(()=>startJob({...input,style:'wallet-beast'},key),{code:'KEY_CONFLICT'});
- const second=await startJob({...input,address:'0x'+'2'.repeat(40)},randomUUID());
+ const second=await startJob({...input,address:'0x'+'2'.repeat(40),style:'legendary-card'},randomUUID());
  const third=await startJob({...input,address:'0x'+'9'.repeat(40)},randomUUID());
  await assert.rejects(()=>startJob(input,randomUUID()),{code:'BUSY'});
  await mutate(s=>{s.jobs[third.id].leaseUntil=0;});
  const response=await runJob(pair[0].id);await assert.rejects(()=>runJob(pair[0].id),{code:'ALREADY_RUNNING'});await response.text();await (await runJob(second.id)).text();
+ assert.equal(imageRequests[0].background,undefined);assert.equal(imageRequests[1].background,'transparent');
  assert.equal((await getJob(pair[0].id)).status,'complete');assert.equal(calls,2);
  const packet=await readImage(pair[0].id);assert.ok((await new Response(packet.bytes).arrayBuffer()).byteLength>0);
  await assert.rejects(()=>acknowledgeImage(pair[0].id,randomUUID()),{code:'INVALID_RECEIPT'});

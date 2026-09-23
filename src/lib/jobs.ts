@@ -84,7 +84,7 @@ export async function runJob(id:string,owner:string,requestSignal?:AbortSignal):
           abort.signal.throwIfAborted();let j:StoredJob=initial;
           if(!j.imageOnly){const features=await analyzeWallet(j.input as GenerationInput);abort.signal.throwIfAborted();send({job:await update(id,token,{features,status:'judging'})});const p=await profile(id,token,features,abort.signal);const character=characterFromProfile(features,j.input.style!,p);send({job:await update(id,token,{character,imagePrompt:composePrompt(character),status:'generating'})});}
           j=(await readState()).jobs[id];abort.signal.throwIfAborted();
-          const image=await generateImage(j.imagePrompt||composePrompt(j.character!));abort.signal.throwIfAborted();
+          const image=await generateImage(j.imagePrompt||composePrompt(j.character!),j.character?.style??j.input.style);abort.signal.throwIfAborted();
           const key='images/'+id+'/'+token,expires=now()+600000,receipt=crypto.randomUUID();
           // Record an orphan-cleanup deadline before storing any bytes.
           await mutate(s=>{owned(s,id,token);s.garbage[key]=expires;});
